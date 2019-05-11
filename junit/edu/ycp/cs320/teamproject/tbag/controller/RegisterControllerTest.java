@@ -1,6 +1,7 @@
 package edu.ycp.cs320.teamproject.tbag.controller;
 
 import static org.junit.Assert.assertEquals;
+
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,10 +56,13 @@ public class RegisterControllerTest {
 	@AfterClass
 	public static void cleanUp() {
 		
+		db.setUserFilePath("Jane");
+		
 		//remove test user from database
 		int user1 = db.findUserIDFromUsername("Jane");
 		db.deleteUserFromUsersTable(user1);
 		
+		db.setUserFilePath("itty");
 		int user2 = db.findUserIDFromUsername("itty");
 		db.deleteUserFromUsersTable(user2);
 		

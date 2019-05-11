@@ -10,7 +10,6 @@ public class LocationTest {
 	private Location model;
 	private String shortDescription;
 	private String longDescription;
-	private Integer hasBeen;
 	
 	@Before
 	public void setUp() {

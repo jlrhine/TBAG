@@ -70,6 +70,9 @@ public class GameplayController
 				db.addToCommands("Unknown direction");
 			}
 		}
+		else {
+			System.out
+		}
 		
 		//__________________Picking up items___________________
 		
@@ -77,14 +80,14 @@ public class GameplayController
 		{
 			 
 			int itemsPickedUp = 0; 
-			for (Item item : itemsInRoom)
+			for (Item item1 : itemsInRoom)
 			{
-				String itemName = item.getName(); 
+				String itemName1 = item1.getName(); 
 				
-				if (input.contains(itemName))
+				if (input.contains(itemName1))
 				{
-					db.setItemLocation(itemName, 0);
-					db.addToCommands("You picked up " + itemName);
+					db.setItemLocation(itemName1, 0);
+					db.addToCommands("You picked up " + itemName1);
 					itemsPickedUp++; 
 				}
 								
@@ -97,17 +100,17 @@ public class GameplayController
 			
 		//_________________Drop Item_____________________
 		} 
-		else if(input.contains("drop")) 
+		if(input.contains("drop")) 
 		{
 			int itemsDropped = 0; 
-			for (Item item : db.getItemsInLocation(0))
+			for (Item item2 : db.getItemsInLocation(0))
 			{
-				String itemName = item.getName(); 
+				String itemName2 = item2.getName(); 
 				
-				if (input.contains(itemName))
+				if (input.contains(itemName2))
 				{
-					db.setItemLocation(itemName, db.getUserLocation());
-					db.addToCommands("You dropped " + itemName + " in " + "room " + userLocation);
+					db.setItemLocation(itemName2, db.getUserLocation());
+					db.addToCommands("You dropped " + itemName2 + " in " + "room " + userLocation);
 					itemsDropped++; 
 				}
 			}
@@ -118,7 +121,7 @@ public class GameplayController
 			}
 			
 		} 
-		else if(input.contains("examine"))
+		if(input.contains("examine"))
 		{
 			db.addToCommands(db.getLocationDescriptionLong(userLocation)); 
 			
@@ -134,7 +137,7 @@ public class GameplayController
 				}
 			}
 		} 
-		else if (input.contains("inventory"))
+		if (input.contains("inventory"))
 		{
 			List<String> itemNames = new ArrayList<String>(); 
 			for (Item item : usersInventory)
@@ -143,11 +146,6 @@ public class GameplayController
 			}
 			model.addInventory(itemNames);
 		}
-		else {
-			System.out.println("Unknown command");
-			db.addToCommands("Unknown command");
-		}
-				
 		
 		// ____________________Agent Encounter ___________________
 		for(int i = 1; i < 5; i++) {
