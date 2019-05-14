@@ -70,58 +70,44 @@ public class GameplayController
 				db.addToCommands("Unknown direction");
 			}
 		}
-		else {
-			System.out
-		}
 		
-		//__________________Picking up items___________________
+		//__________________Picking up & dropping items___________________
 		
-		else if (input.contains("pick up") || input.contains("grab") || input.contains("take")) 
+		else if (input.contains("pick up") || input.contains("grab") || input.contains("take") || input.contains("drop")) 
 		{
-			 
-			int itemsPickedUp = 0; 
-			for (Item item1 : itemsInRoom)
-			{
-				String itemName1 = item1.getName(); 
 				
-				if (input.contains(itemName1))
-				{
-					db.setItemLocation(itemName1, 0);
-					db.addToCommands("You picked up " + itemName1);
-					itemsPickedUp++; 
-				}
-								
-			}
-			
-			if (itemsPickedUp == 0)
+			for (Item item : itemsInRoom)
 			{
-				db.addToCommands("Couldn't pickup item"); 
-			}
-			
-		//_________________Drop Item_____________________
-		} 
-		if(input.contains("drop")) 
-		{
-			int itemsDropped = 0; 
-			for (Item item2 : db.getItemsInLocation(0))
-			{
-				String itemName2 = item2.getName(); 
-				
-				if (input.contains(itemName2))
-				{
-					db.setItemLocation(itemName2, db.getUserLocation());
-					db.addToCommands("You dropped " + itemName2 + " in " + "room " + userLocation);
-					itemsDropped++; 
+				for(Item item1 : usersInventory) {
+					
+					String itemName = item.getName();
+					String itemName1 = item1.getName();
+						
+					if (input.contains(itemName))
+					{
+						//_______________________Pick up item_______________________
+						 if(input.contains("pick up") || input.contains("grab") || input.contains("take") && db.getUserLocation() == item.getLocationID()) {
+							db.setItemLocation(itemName, 0);
+							db.addToCommands("You picked up " + itemName);
+						 }
+						 else if(input.contains("pick up") || input.contains("grab") || input.contains("take") && db.getUserLocation() != item.getLocationID()) {
+							 db.addToCommands("Can't pick up item.");
+						 }
+						//_________________Drop Item_____________________
+						 if(input.contains("drop") && item1.getLocationID() == 0) 
+						{
+							db.setItemLocation(itemName1, db.getUserLocation());
+							db.addToCommands("You dropped " + itemName1 + " in " + "room " + userLocation);
+						}
+						 else if(input.contains("drop") && item1.getLocationID() != 0) {
+							 db.addToCommands("Cannot drop item.");
+						 }
+					}
 				}
 			}
-			
-			if (itemsDropped == 0)
-			{
-				db.addToCommands("You don't have that item");
-			}
-			
-		} 
-		if(input.contains("examine"))
+		 }
+
+		else if(input.contains("examine"))
 		{
 			db.addToCommands(db.getLocationDescriptionLong(userLocation)); 
 			
@@ -137,7 +123,7 @@ public class GameplayController
 				}
 			}
 		} 
-		if (input.contains("inventory"))
+		else if (input.contains("inventory"))
 		{
 			List<String> itemNames = new ArrayList<String>(); 
 			for (Item item : usersInventory)

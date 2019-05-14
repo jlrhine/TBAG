@@ -293,7 +293,7 @@ public class GameplayControllerTest
 	}
 	
 	@Test
-	public void testPickUpItem() {
+	public void testPickUpDropItem() {
 		
 		DatabaseProvider.setInstance(new DerbyDatabase());
 		db = DatabaseProvider.getInstance(); 
@@ -319,12 +319,14 @@ public class GameplayControllerTest
 		itemLocation = db.getItemLocationID("sword");
 		assertEquals(0, itemLocation);//check that sword's location was updated to the user's inventory
 		
-		db.setItemLocation("sword", 6);//place sword back in room 6 to be able to run test again
+		controller.gameLogic("drop sword");
+		itemLocation = db.getItemLocationID("sword");
+		assertEquals(6, itemLocation);//check that sword's location was changed back to the room
 		
 	}
 	
 	@Test
-	public void testGrabItem() {
+	public void testGrabDropItem() {
 		
 		DatabaseProvider.setInstance(new DerbyDatabase());
 		db = DatabaseProvider.getInstance(); 
@@ -350,12 +352,14 @@ public class GameplayControllerTest
 		itemLocation = db.getItemLocationID("stick");
 		assertEquals(0, itemLocation);//check that stick's location was updated to the user's inventory
 		
-		db.setItemLocation("stick", 7);//place stick back in room 7 for testing purposes
+		controller.gameLogic("drop stick");
+		itemLocation = db.getItemLocationID("stick");
+		assertEquals(7, itemLocation);//check that stick's location was changed back to the room
 		
 	}
 	
 	@Test
-	public void testTakeItem() {
+	public void testTakeDropItem() {
 		
 		DatabaseProvider.setInstance(new DerbyDatabase());
 		db = DatabaseProvider.getInstance(); 
@@ -381,41 +385,16 @@ public class GameplayControllerTest
 		itemLocation = db.getItemLocationID("dagger");
 		assertEquals(0, itemLocation);//check that dagger's location was updated to the user's inventory
 		
-		db.setItemLocation("dagger", 8);//place dagger back in room 8 for testing purposes
-		
-	}
-	
-	@Test
-	public void testDropItem() {
-		
-		DatabaseProvider.setInstance(new DerbyDatabase());
-		db = DatabaseProvider.getInstance(); 
-		
-		model = new Gameplay();
-		
-		db.setUserFilePath(username);
-		db.setUserLocation(10);//set user's location to room 10
-		int userLocation = db.getUserLocation();
-		assertEquals(10, userLocation);//check that the user is in room 10 now
-		
-		controller = new GameplayController(username, false);
-		controller.setModel(model);
-		
-		List<Item> itemsInRoom = db.getItemsInLocation(db.getUserLocation());//get the items in room 10
-		assertEquals(0, itemsInRoom.size());//check that there are no items in room 10
-		int itemLocation = db.getItemLocationID("goddess note");
-		assertEquals(0, itemLocation);//checks that the goddess note is in the user's inventory
-		
-		controller.gameLogic("drop goddess note");
-		itemLocation = db.getItemLocationID("goddess note");
-		assertEquals(10, itemLocation);//check that goddess note is now in room 10
-		
-		db.setItemLocation("goddess note", 0);//place note back in user's inventory for testing purposes
+		controller.gameLogic("drop dagger");
+		itemLocation = db.getItemLocationID("dagger");
+		assertEquals(8, itemLocation);//check that dagger's location was changed back to the room
 		
 	}
 	
 	@AfterClass
 	public static void cleanUp() {
+		
+		db.setUserFilePath("john");
 		
 		//remove test user from database
 		int user_id = db.findUserIDFromUsername("john");
